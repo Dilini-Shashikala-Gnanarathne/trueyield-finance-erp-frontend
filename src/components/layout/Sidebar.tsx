@@ -1,5 +1,6 @@
-import { NavLink } from 'react-router-dom';
+﻿import { NavLink, useNavigate } from 'react-router-dom';
 import { env } from '@/env';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface NavItem {
   to: string;
@@ -8,18 +9,32 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { to: '/',                icon: '⬡',  label: 'Dashboard'       },
-  { to: '/payroll',         icon: '💰', label: 'Process Payroll'  },
-  { to: '/journal-entries', icon: '📒', label: 'Journal Entry'    },
-  { to: '/history',         icon: '🕐', label: 'History'          },
+  { to: '/',                icon: '📊', label: 'Dashboard'      },
+  { to: '/payroll',         icon: '💰', label: 'Process Payroll' },
+  { to: '/journal-entries', icon: '📒', label: 'Journal Entry'   },
+  { to: '/history',         icon: '🕑', label: 'History'         },
 ];
 
+const ROLE_ICON: Record<string, string> = {
+  FARMER: '🚜',
+  BUYER:  '🛒',
+  ADMIN:  '🔑',
+};
+
 export default function Sidebar() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/auth/login', { replace: true });
+  };
+
   return (
     <aside className="sidebar">
       {/* Brand */}
       <div className="sidebar__brand">
-        <div className="sidebar__logo" aria-hidden="true">₿</div>
+        <div className="sidebar__logo" aria-hidden="true">🌾</div>
         <div className="sidebar__brand-text">
           <span className="sidebar__brand-name">{env.appName}</span>
           <span className="sidebar__brand-sub">REST · gRPC · Finance</span>
@@ -44,6 +59,33 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
+
+      {/* Spacer */}
+      <div style={{ flex: 1 }} />
+
+      {/* User panel */}
+      {user && (
+        <div className="sidebar__user-panel">
+          <NavLink to="/profile" className={({ isActive }) => `sidebar__user${isActive ? ' active' : ''}`}>
+            <div className="sidebar__user-avatar">
+              {ROLE_ICON[user.role] ?? '👤'}
+            </div>
+            <div className="sidebar__user-info">
+              <span className="sidebar__user-name">{user.fullName}</span>
+              <span className="sidebar__user-role">{user.role}</span>
+            </div>
+          </NavLink>
+          <button
+            id="sidebar-logout"
+            type="button"
+            className="sidebar__logout-btn"
+            title="Sign Out"
+            onClick={handleLogout}
+          >
+            🚪
+          </button>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="sidebar__footer">
