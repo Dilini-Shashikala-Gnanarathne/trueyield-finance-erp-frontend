@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -8,7 +8,17 @@ import App from './App';
 import './index.css';
 import { env } from './env';
 
-// ── TanStack Query client configuration ────────────────────────────────────────
+// ── Early theme init (before React mounts, prevents flash) ─────────────────
+(function initTheme() {
+  const stored = localStorage.getItem('erp-theme');
+  const preferLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  const theme = stored === 'light' || stored === 'dark'
+    ? stored
+    : (preferLight ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+
+// ── TanStack Query client configuration ─────────────────────────────────────
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -27,7 +37,7 @@ const queryClient = new QueryClient({
   },
 });
 
-// ── Root mount ─────────────────────────────────────────────────────────────────
+// ── Root mount ───────────────────────────────────────────────────────────────
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error(

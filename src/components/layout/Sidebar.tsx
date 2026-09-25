@@ -1,24 +1,26 @@
 ﻿import { NavLink, useNavigate } from "react-router-dom";
 import { env } from "@/env";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/hooks/useTheme";
 
 interface NavItem { to: string; icon: string; label: string; roles?: string[] }
 
 const NAV_ITEMS: NavItem[] = [
   { to: "/",                icon: "📊", label: "Dashboard"       },
-  { to: "/marketplace",     icon: "🌿", label: "Marketplace"     },
-  { to: "/my-listings",     icon: "🚜", label: "My Listings",    roles: ["FARMER"] },
-  { to: "/produce",         icon: "🍎", label: "Produce"         },
+  { to: "/marketplace",     icon: "🛒", label: "Marketplace"     },
+  { to: "/my-listings",     icon: "📋", label: "My Listings",    roles: ["FARMER"] },
+  { to: "/produce",         icon: "🌾", label: "Produce"         },
   { to: "/payroll",         icon: "💰", label: "Process Payroll" },
   { to: "/journal-entries", icon: "📒", label: "Journal Entry"   },
-  { to: "/history",         icon: "🕑", label: "History"         },
+  { to: "/history",         icon: "📜", label: "History"         },
 ];
 
-const ROLE_ICON: Record<string, string> = { FARMER: "🚜", BUYER: "🛒", ADMIN: "🔑" };
+const ROLE_ICON: Record<string, string> = { FARMER: "👨‍🌾", BUYER: "🧑‍💼", ADMIN: "🛡️" };
 
 export default function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { isDark, toggle } = useTheme();
 
   const handleLogout = () => {
     logout();
@@ -33,7 +35,7 @@ export default function Sidebar() {
     <aside className="sidebar">
       {/* Brand */}
       <div className="sidebar__brand">
-        <div className="sidebar__logo" aria-hidden="true">🌾</div>
+        <div className="sidebar__logo" aria-hidden="true">🌱</div>
         <div className="sidebar__brand-text">
           <span className="sidebar__brand-name">{env.appName}</span>
           <span className="sidebar__brand-sub">REST · gRPC · Finance</span>
@@ -58,6 +60,24 @@ export default function Sidebar() {
       </nav>
 
       <div style={{ flex: 1 }} />
+
+      {/* Theme Toggle */}
+      <div className="sidebar__theme-row">
+        <span className="sidebar__section-label">Theme</span>
+        <button
+          id="sidebar-theme-toggle"
+          type="button"
+          className="sidebar__theme-toggle"
+          onClick={toggle}
+          title={isDark ? "Switch to Light mode" : "Switch to Dark mode"}
+          aria-label={isDark ? "Switch to Light mode" : "Switch to Dark mode"}
+        >
+          <span className="sidebar__theme-track">
+            <span className="sidebar__theme-thumb">{isDark ? "🌙" : "☀️"}</span>
+          </span>
+          <span className="sidebar__theme-label">{isDark ? "Dark" : "Light"}</span>
+        </button>
+      </div>
 
       {/* User panel */}
       {user && (
