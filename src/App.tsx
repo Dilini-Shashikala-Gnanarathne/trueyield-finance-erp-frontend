@@ -17,6 +17,7 @@ const Profile      = lazy(() => import("@/pages/Profile/Profile"));
 const Marketplace  = lazy(() => import("@/pages/Marketplace/Marketplace"));
 const MyListings   = lazy(() => import("@/pages/MyListings/MyListings"));
 const Produce      = lazy(() => import("@/pages/Produce/Produce"));
+const ListingDetails= lazy(() => import("@/pages/Marketplace/ListingDetails"));
 
 function PageFallback() {
   return (
@@ -53,6 +54,7 @@ export default function App() {
                         <Route path="/marketplace"     element={<Marketplace />}  />
                         <Route path="/my-listings"     element={<MyListings />}   />
                         <Route path="/produce"         element={<Produce />}      />
+                        <Route path="/marketplace/:id" element={<ListingDetails />} />
                         <Route path="*"                element={<Navigate to="/" replace />} />
                       </Routes>
                     </Suspense>
@@ -66,3 +68,4 @@ export default function App() {
     </AuthProvider>
   );
 }
+
