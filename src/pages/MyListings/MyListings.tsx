@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -248,7 +248,7 @@ function ListingRow({ listing, onRefresh }: ListingRowProps) {
   const [showCancel, setShowCancel] = useState(false);
   const [reason,     setReason]     = useState("");
 
-  const action = async (label: string, fn: () => Promise<void>) => {
+  const action = async (label: string, fn: () => Promise<unknown>) => {
     setBusy(true);
     try {
       await fn();

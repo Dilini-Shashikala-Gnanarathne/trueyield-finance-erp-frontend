@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { listingsApi, ListingResponse } from "@/api/marketplace.api";
 import PageHeader from "@/components/layout/PageHeader";
@@ -48,7 +48,7 @@ export default function ListingDetails() {
     <div className="page-container" style={{ padding: '1rem' }}>
       <PageHeader 
         title={listing.title || listing.produce.name} 
-        subtitle={\Listed by \ • \\}
+        subtitle={`Listed by ${listing.seller?.sellerName || "Farmer"} • ${listing.location?.locality || ""}${listing.location?.district ? `, ${listing.location.district}` : ""}`}
       />
 
       <div style={{ display: 'flex', gap: '2rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>

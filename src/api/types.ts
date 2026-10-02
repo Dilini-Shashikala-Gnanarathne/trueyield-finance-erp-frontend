@@ -1,27 +1,3 @@
-// ─── Payroll Service DTOs (mirrors Java backend) ─────────────────────────────
-
-export interface ProcessPayrollRequest {
-  /** Payroll period in YYYY-MM format, e.g. "2026-08" */
-  payrollPeriod: string;
-  /** Number of employees to include. Range: 1–10 000 */
-  employeeCount: number;
-}
-
-export interface ProcessPayrollResponse {
-  payrollReference: string;
-  payrollPeriod: string;
-  employeeCount: number;
-  totalAmount: number;
-  status: PayrollStatus;
-  journalReference: string | null;
-  financeTransport: FinanceTransport;
-  createdAt: string;
-  message: string | null;
-}
-
-export type PayrollStatus = 'PENDING' | 'PROCESSING' | 'PROCESSED' | 'FAILED';
-export type FinanceTransport = 'GRPC' | 'REST';
-
 // ─── Finance Service DTOs ─────────────────────────────────────────────────────
 
 export interface CreateJournalEntryRequest {
@@ -60,31 +36,4 @@ export interface ApiError {
   status: number;
   detail?: string;
   timestamp?: string;
-}
-
-// ─── Benchmark ────────────────────────────────────────────────────────────────
-
-export interface BenchmarkSample {
-  iteration: number;
-  latencyMs: number;
-  success: boolean;
-}
-
-export interface BenchmarkResult {
-  transport: FinanceTransport;
-  samples: BenchmarkSample[];
-  avgMs: number;
-  p50Ms: number;
-  p95Ms: number;
-  p99Ms: number;
-  minMs: number;
-  maxMs: number;
-  successRate: number;
-}
-
-// ─── Local History ─────────────────────────────────────────────────────────────
-
-export interface PayrollHistoryEntry extends ProcessPayrollResponse {
-  /** ISO string timestamp when the frontend recorded this run */
-  recordedAt: string;
 }

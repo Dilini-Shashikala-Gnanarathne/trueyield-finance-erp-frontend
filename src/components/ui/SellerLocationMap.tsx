@@ -18,6 +18,7 @@ interface SellerLocationMapProps {
     latitude: number;
     longitude: number;
     locality: string;
+    district?: string;
     visibility: 'APPROXIMATE' | 'EXACT_AFTER_ORDER';
 }
 
@@ -25,6 +26,7 @@ const SellerLocationMap: React.FC<SellerLocationMapProps> = ({
     latitude, 
     longitude, 
     locality, 
+    district,
     visibility 
 }) => {
     const position: [number, number] = [latitude, longitude];
@@ -51,14 +53,14 @@ const SellerLocationMap: React.FC<SellerLocationMapProps> = ({
                     >
                         <Popup>
                             <strong>Approximate Location</strong><br/>
-                            {locality}
+                            {locality}{district ? `, ${district}` : ''}
                         </Popup>
                     </Circle>
                 ) : (
                     <Marker position={position}>
                         <Popup>
                             <strong>Seller Location</strong><br/>
-                            {locality}
+                            {locality}{district ? `, ${district}` : ''}
                         </Popup>
                     </Marker>
                 )}

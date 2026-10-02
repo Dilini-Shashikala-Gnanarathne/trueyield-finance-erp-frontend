@@ -1,4 +1,4 @@
-﻿import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { env } from "@/env";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/hooks/useTheme";
@@ -10,9 +10,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: "/marketplace",     icon: "🛒", label: "Marketplace"     },
   { to: "/my-listings",     icon: "📋", label: "My Listings",    roles: ["FARMER"] },
   { to: "/produce",         icon: "🌾", label: "Produce"         },
-  { to: "/payroll",         icon: "💰", label: "Process Payroll" },
   { to: "/journal-entries", icon: "📒", label: "Journal Entry"   },
-  { to: "/history",         icon: "📜", label: "History"         },
 ];
 
 const ROLE_ICON: Record<string, string> = { FARMER: "👨‍🌾", BUYER: "🧑‍💼", ADMIN: "🛡️" };

@@ -73,12 +73,6 @@ function createClient(baseURL: string, timeoutMs = 10_000) {
 // ── Exported clients ───────────────────────────────────────────────────────────
 
 /**
- * Client for Payroll Service via API Gateway.
- * In dev, Vite proxy routes /api/payroll → http://localhost:8080
- */
-export const payrollClient = createClient('/api/payroll');
-
-/**
  * Client for Finance Service (direct).
  * In dev, Vite proxy routes /api/finance → http://localhost:8082
  */
