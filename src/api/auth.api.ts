@@ -189,4 +189,11 @@ export const authApi = {
     const res = await authClient.put<ApiWrapper<BuyerProfileResponse>>("/v1/profile/buyer", body);
     return res.data.data;
   },
+  logout: async (): Promise<void> => {
+    try {
+      await authClient.post("/v1/auth/logout");
+    } catch {
+      // Ignore network errors to ensure client-side state is always cleared
+    }
+  },
 };

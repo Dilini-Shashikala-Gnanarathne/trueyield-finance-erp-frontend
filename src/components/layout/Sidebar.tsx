@@ -36,7 +36,7 @@ export default function Sidebar() {
         <div className="sidebar__logo" aria-hidden="true">🌱</div>
         <div className="sidebar__brand-text">
           <span className="sidebar__brand-name">{env.appName}</span>
-          <span className="sidebar__brand-sub">REST · gRPC · Finance</span>
+          <span className="sidebar__brand-sub">Enterprise Management</span>
         </div>
       </div>
 
@@ -94,7 +94,7 @@ export default function Sidebar() {
       )}
 
       <footer className="sidebar__footer">
-        <div className="sidebar__version">v1.0.0 · Spring Boot 3.3</div>
+        <div className="sidebar__version">v1.0.0</div>
       </footer>
     </aside>
   );

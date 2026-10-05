@@ -48,10 +48,14 @@ function createClient(baseURL: string, timeoutMs = 10_000) {
     },
   });
 
-  // ── Request interceptor: inject correlation & client headers ──────────────
+  // ── Request interceptor: inject correlation & client headers & auth ────────
   instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     config.headers['X-Request-Id'] = generateRequestId();
     config.headers['X-Client'] = 'finance-erp-frontend/1.0';
+    const token = localStorage.getItem('ty_access_token');
+    if (token) {
+      config.headers['Authorization'] = 'Bearer ' + token;
+    }
     return config;
   });
 

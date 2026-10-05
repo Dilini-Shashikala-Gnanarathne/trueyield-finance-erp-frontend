@@ -1,4 +1,4 @@
-﻿import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import type { AuthResponse, UserSummary, ProfileResponse } from '@/api/auth.api';
 import { authApi } from '@/api/auth.api';
@@ -36,10 +36,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
-    setUser(null);
-    setProfile(null);
+    authApi.logout().finally(() => {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+      setUser(null);
+      setProfile(null);
+    });
   }, []);
 
   const refreshProfile = useCallback(async () => {
