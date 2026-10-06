@@ -31,6 +31,13 @@ export default class ErrorBoundary extends Component<Props, State> {
   }
 
   handleReset = () => {
+    if (
+      this.state.error?.message?.includes('dynamically imported module') ||
+      this.state.error?.message?.includes('Failed to fetch')
+    ) {
+      window.location.reload();
+      return;
+    }
     this.setState({ hasError: false, error: null });
   };
 
@@ -38,15 +45,21 @@ export default class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       if (this.props.fallback) return this.props.fallback;
 
+      const isChunkError =
+        this.state.error?.message?.includes('dynamically imported module') ||
+        this.state.error?.message?.includes('Failed to fetch');
+
       return (
         <div className="error-boundary">
           <div className="error-boundary__icon" aria-hidden="true">⚠️</div>
           <h2 className="error-boundary__title">Something went wrong</h2>
           <p className="error-boundary__message">
-            {this.state.error?.message ?? 'An unexpected rendering error occurred.'}
+            {isChunkError
+              ? 'A newer version of the page is available or connection was interrupted. Please reload.'
+              : (this.state.error?.message ?? 'An unexpected rendering error occurred.')}
           </p>
           <button className="btn btn--secondary" onClick={this.handleReset}>
-            Try Again
+            {isChunkError ? 'Reload Page' : 'Try Again'}
           </button>
         </div>
       );

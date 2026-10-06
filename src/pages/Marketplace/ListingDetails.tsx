@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { listingsApi, ListingResponse } from "@/api/marketplace.api";
+import { listingsApi, type ListingResponse } from "@/api/marketplace.api";
 import PageHeader from "@/components/layout/PageHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import SellerLocationMap from "@/components/ui/SellerLocationMap";
@@ -47,7 +47,7 @@ export default function ListingDetails() {
   return (
     <div className="page-container" style={{ padding: '1rem' }}>
       <PageHeader 
-        title={listing.title || listing.produce.name} 
+        title={listing.title || listing.produce?.name || "Listing Details"} 
         subtitle={`Listed by ${listing.seller?.sellerName || "Farmer"} • ${listing.location?.locality || ""}${listing.location?.district ? `, ${listing.location.district}` : ""}`}
       />
 
@@ -103,20 +103,26 @@ export default function ListingDetails() {
           
           <div style={{ backgroundColor: '#1e1e2d', padding: '1.5rem', borderRadius: '8px' }}>
              <h3 style={{ fontSize: '1.125rem', color: '#fff', marginBottom: '1rem' }}>Location Information</h3>
-             <div style={{ height: '300px', width: '100%', borderRadius: '8px', overflow: 'hidden' }}>
-                <SellerLocationMap 
-                  latitude={listing.location.latitude}
-                  longitude={listing.location.longitude}
-                  locality={listing.location.locality}
-                  district={listing.location.district}
-                  visibility={listing.location.visibility}
-                />
-             </div>
-             <div style={{ marginTop: '1rem', color: '#a1a1aa', fontSize: '0.875rem' }}>
-               {listing.location.visibility === 'APPROXIMATE' 
-                  ? "Showing approximate location to protect seller privacy." 
-                  : "Showing exact farm location."}
-             </div>
+             {listing.location ? (
+               <>
+                 <div style={{ height: '300px', width: '100%', borderRadius: '8px', overflow: 'hidden' }}>
+                    <SellerLocationMap 
+                      latitude={listing.location.latitude}
+                      longitude={listing.location.longitude}
+                      locality={listing.location.locality}
+                      district={listing.location.district}
+                      visibility={listing.location.visibility}
+                    />
+                 </div>
+                 <div style={{ marginTop: '1rem', color: '#a1a1aa', fontSize: '0.875rem' }}>
+                   {listing.location.visibility === 'APPROXIMATE' 
+                      ? "Showing approximate location to protect seller privacy." 
+                      : "Showing exact farm location."}
+                 </div>
+               </>
+             ) : (
+               <div style={{ color: '#a1a1aa', fontSize: '0.875rem' }}>Location details unavailable.</div>
+             )}
           </div>
           
         </div>

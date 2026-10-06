@@ -6,6 +6,10 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: { "@": resolve(__dirname, "./src") },
+     dedupe: ["react", "react-dom"],
+  },
+  optimizeDeps: {
+    include: ["react-leaflet", "leaflet"],
   },
   server: {
     port: 5173,

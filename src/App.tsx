@@ -6,16 +6,38 @@ import Sidebar from "@/components/layout/Sidebar";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 
+function lazyWithRetry<T extends React.ComponentType<any>>(
+  factory: () => Promise<{ default: T }>
+) {
+  return lazy(async () => {
+    try {
+      return await factory();
+    } catch (err: unknown) {
+      const msg = (err as Error)?.message ?? "";
+      if (msg.includes("dynamically imported module") || msg.includes("Failed to fetch")) {
+        const key = "reload_retry_" + window.location.pathname;
+        if (!sessionStorage.getItem(key)) {
+          sessionStorage.setItem(key, "1");
+          window.location.reload();
+          return new Promise(() => {});
+        }
+        sessionStorage.removeItem(key);
+      }
+      throw err;
+    }
+  });
+}
+
 // ── Lazy-loaded pages ─────────────────────────────────────────────────────────
-const Dashboard    = lazy(() => import("@/pages/Dashboard/Dashboard"));
-const JournalEntry = lazy(() => import("@/pages/JournalEntry/JournalEntry"));
-const Login        = lazy(() => import("@/pages/Auth/Login"));
-const Register     = lazy(() => import("@/pages/Auth/Register"));
-const Profile      = lazy(() => import("@/pages/Profile/Profile"));
-const Marketplace  = lazy(() => import("@/pages/Marketplace/Marketplace"));
-const MyListings   = lazy(() => import("@/pages/MyListings/MyListings"));
-const Produce      = lazy(() => import("@/pages/Produce/Produce"));
-const ListingDetails= lazy(() => import("@/pages/Marketplace/ListingDetails"));
+const Dashboard    = lazyWithRetry(() => import("@/pages/Dashboard/Dashboard"));
+const JournalEntry = lazyWithRetry(() => import("@/pages/JournalEntry/JournalEntry"));
+const Login        = lazyWithRetry(() => import("@/pages/Auth/Login"));
+const Register     = lazyWithRetry(() => import("@/pages/Auth/Register"));
+const Profile      = lazyWithRetry(() => import("@/pages/Profile/Profile"));
+const Marketplace  = lazyWithRetry(() => import("@/pages/Marketplace/Marketplace"));
+const MyListings   = lazyWithRetry(() => import("@/pages/MyListings/MyListings"));
+const Produce      = lazyWithRetry(() => import("@/pages/Produce/Produce"));
+const ListingDetails= lazyWithRetry(() => import("@/pages/Marketplace/ListingDetails"));
 
 function PageFallback() {
   return (
