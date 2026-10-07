@@ -45,7 +45,7 @@ const ACCOUNT_OPTIONS = [
   'REVENUE',
 ];
 
-const CURRENCY_OPTIONS = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'AUD', 'CAD', 'SGD'];
+const CURRENCY_OPTIONS = ['LKR'];
 
 export default function JournalEntry() {
   const [lastResponse, setLastResponse] = useState<CreateJournalEntryResponse | null>(null);
