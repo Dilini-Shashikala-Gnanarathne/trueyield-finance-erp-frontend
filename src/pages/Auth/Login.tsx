@@ -56,10 +56,7 @@ export default function Login() {
           </div>
         </div>
 
-        <div className="auth-card__header">
-          <h2 className="auth-card__title">Welcome back</h2>
-          <p className="auth-card__subtitle">Sign in to continue to your dashboard</p>
-        </div>
+        
 
         <form onSubmit={handleSubmit(onSubmit)} className="auth-form" noValidate>
           <div className="form-field">
